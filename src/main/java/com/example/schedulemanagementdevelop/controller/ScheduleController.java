@@ -18,6 +18,8 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     // 일정 생성
+    // 로그인 필터가 적용되어 있어서 로그인되어 있는 사용자만 생성할 수 있음.
+    // 김으로 로그인한 경우, username에는 김밖에 입력 못함
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> save(@RequestBody CreateScheduleRequestDto requestDto) {
 

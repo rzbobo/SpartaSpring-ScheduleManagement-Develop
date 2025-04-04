@@ -6,7 +6,6 @@ import com.example.schedulemanagementdevelop.dto.UserResponseDto;
 import com.example.schedulemanagementdevelop.entity.User;
 import com.example.schedulemanagementdevelop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -73,6 +72,14 @@ public class UserService {
     // 로그인
     public LoginResponseDto login(String email, String password) {
         Optional<User> optionalUser = userRepository.findIdByEmailAndPassword(email, password);
+
+        // - [ ]  **예외처리**
+        //    - [ ]  로그인 시 이메일과 비밀번호가 일치하지 않을 경우 HTTP Status code 401을 반환합니다.
+        // 비어 있다는 건 일치하지 않다는 것(일치해야 데이터 가져오니까)
+        // 401 Error -> UNAUTORIZED
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
 
         User user = optionalUser.get();
 

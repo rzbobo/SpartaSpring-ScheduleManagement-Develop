@@ -41,7 +41,7 @@ public class UserController {
 
         return new ResponseEntity<>(userResponseDto,HttpStatus.OK);
     }
-    // 매핑 경로가 {id}로만 하면 겹치기 때문에 한 번씩 더 거쳐주기
+    // 매핑 경로가 {id}로만 하면 겹치기 때문에 한 번씩 더 거쳐주기 (중요)
     @GetMapping("/username/{username}")
     public ResponseEntity<UserResponseDto> findByUsername(@PathVariable String username) {
         UserResponseDto userResponseDto = userService.findByUsername(username);
