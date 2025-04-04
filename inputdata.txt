@@ -1,0 +1,47 @@
+spring.jpa.hibernate.ddl-auto=create
+ddl-auto값을 create로 설정해두었기에,
+프로그램 실행 시마다 db가 초기화되어서 test할 db를 미리 정의해놓음. (postman에 프로그램 실행할 때 마다 하나하나 쓰기 귀찮아서)
+
+(최초 실행 시, create로 설정해서 테이블 생성하고 이후에 update로 관리하는 것이 바람직해보이긴 하는데
+ 별도 언급이 없었으니 이대로 진행)
+
+@Post
+SignupTest(localhost:8080/users/signup) :
+{
+    "username" : "김",
+    "email": "aab.com",
+    "password" : "123331"
+}
+{
+    "username" : "박",
+    "email": "aac.com",
+    "password" : "123331"
+}
+
+
+@Post
+LoginTest(localhost:8080/users/login) :
+{
+    "email": "aab.com",
+    "password" : "123331"
+}
+
+@Get [user_id로 조회]
+(localhost:8080/users/1)
+
+@Get [유저 이름으로 조회]
+localhost:8080/users/username/김
+
+@Get [유저 이메일로 조회]
+localhost:8080/users/email/aab.com
+
+
+
+@Post
+ScheduleTest(localhost:8080/schedules) :
+{
+    "title": "제목1",
+    "contents" : "내용1",
+    "username" : "김"
+}
+

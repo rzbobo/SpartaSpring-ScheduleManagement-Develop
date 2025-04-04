@@ -30,7 +30,7 @@ public class LoginFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        log.info("로그인 필터 로직 실패");
+        //log.info("로그인 필터 로직 실패");
 
         //whiteList에 존재하는 URL인지 검사
         if (!isWhiteList(requestURI)) {

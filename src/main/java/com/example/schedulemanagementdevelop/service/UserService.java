@@ -29,7 +29,7 @@ public class UserService {
     }
 
 
-    //조회
+    // 유저 id 기반 조회
     public UserResponseDto findById(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
 
@@ -42,12 +42,39 @@ public class UserService {
 
         return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
     }
+    // 유저 email 기반 조회
+    public UserResponseDto findByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+
+        // NPE 방지
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist email = " + email);
+        }
+
+        User findUser = optionalUser.get();
+
+        return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
+    }
+
+    // 유저 이름 기반 조회
+    public UserResponseDto findByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findUserByUsername(username);
+
+        // NPE 방지
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist username = " + username);
+        }
+
+        User findUser = optionalUser.get();
+
+        return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
+    }
 
     // 로그인
     public LoginResponseDto login(String email, String password) {
-        Optional<User> index = userRepository.findIdByEmailAndPassword(email, password);
+        Optional<User> optionalUser = userRepository.findIdByEmailAndPassword(email, password);
 
-        User user = index.get();
+        User user = optionalUser.get();
 
         return new LoginResponseDto(user.getId());
     }

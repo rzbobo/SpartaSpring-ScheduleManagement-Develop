@@ -35,12 +35,27 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
         UserResponseDto userResponseDto = userService.findById(id);
 
         return new ResponseEntity<>(userResponseDto,HttpStatus.OK);
     }
+    // 매핑 경로가 {id}로만 하면 겹치기 때문에 한 번씩 더 거쳐주기
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserResponseDto> findByUsername(@PathVariable String username) {
+        UserResponseDto userResponseDto = userService.findByUsername(username);
+
+        return new ResponseEntity<>(userResponseDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponseDto> findByEmail(@PathVariable String email) {
+        UserResponseDto userResponseDto = userService.findByEmail(email);
+
+        return new ResponseEntity<>(userResponseDto,HttpStatus.OK);
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(
@@ -70,6 +85,11 @@ public class UserController {
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 
+    //
+
+
+
+    //
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
@@ -81,4 +101,6 @@ public class UserController {
     }
         // 반환할 데이터가 없을 경우, Void 사용 가능.
         // 이후 예외처리 컨트롤러에서 메세지 출력하는 형식으로 따로 다룰 생각.
+
+
 }
