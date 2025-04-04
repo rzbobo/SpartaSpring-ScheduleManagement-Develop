@@ -1,0 +1,57 @@
+package com.example.schedulemanagementdevelop.service;
+
+import com.example.schedulemanagementdevelop.dto.LoginResponseDto;
+import com.example.schedulemanagementdevelop.dto.SignUpResponseDto;
+import com.example.schedulemanagementdevelop.dto.UserResponseDto;
+import com.example.schedulemanagementdevelop.entity.User;
+import com.example.schedulemanagementdevelop.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    //생성
+    public SignUpResponseDto signUp(String username, String password, String email) {
+        User user = new User(username, password, email);
+
+        User savedUser = userRepository.save(user);
+
+        return new SignUpResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+    }
+
+
+    //조회
+    public UserResponseDto findById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        // NPE 방지
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+
+        User findUser = optionalUser.get();
+
+        return new UserResponseDto(findUser.getUsername(), findUser.getEmail());
+    }
+
+    // 로그인
+    public LoginResponseDto login(String email, String password) {
+        Optional<User> index = userRepository.findIdByEmailAndPassword(email, password);
+
+        User user = index.get();
+
+        return new LoginResponseDto(user.getId());
+    }
+}
+    //
+
+
